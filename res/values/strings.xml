@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CatastropherAndroid</string>
+    <string name="app_id">1466980576853889</string>
+
+    <!-- Dialog Strings -->
+    <string name="fb_logged_in">Login successful!</string>
+    <string name="fb_logged_out">You have been logged out</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="logout_prompt">Are you sure you want to log out?</string>
+    <string name="confirm_new_report">Do you want to create a new report?</string>
+    <string name="loading">loading&#8230;</string>
+
+    <!-- Main Activity Menu List Strings -->
+    <string-array name="main_activity_menu_list">
+        <item>Settings</item>
+        <item>About</item>
+        <item>Log out</item>
+    </string-array>
+
+    <!-- Drawer Strings -->
+    <string name="drawer_open">Drawer open</string>
+    <string name="drawer_closed">Drawer closed</string>
+
+    <!-- About Strings -->
+    <string name="about_activity_name">About</string>
+    <string name="about_text">This app is a proof of concept app for Hack For Sweden. To learn more please email jostenbe@kth.se</string>
+
+    <!-- New Report Strings -->
+    <string name="new_report_name">New Report</string>
+    <string name="title_input">Title: </string>
+    <string name="text_input">Text: </string>
+    <string name="send">Send</string>
+    <string name="new_report_empty_title">Empty Title!</string>
+    <string name="new_report_empty_text">Empty Text!</string>
+    <string name="new_report_success">New Report sent successfully!</string>
+    <string name="new_report_fail">Network Error</string>
+
+    <!-- URLs -->
+    <string name="new_report_url">http://83.177.167.93:3000/catastropher/input</string>
+    <string name="list_report_url">http://83.177.167.93:3000/catastropher/output</string>
+    <string name="stream_report_url">http://83.177.167.93:3000/catastropher/stream</string>
+
+    <!-- Bundle keys -->
+    <string name="user_fb_id_key">main.jf.catastropherandroid.user_fb_id_key</string>
+    <string name="longitude_key">main.jf.catastropherandroid.longitude_key</string>
+    <string name="latitude_key">main.jf.catastropherandroid.latitude_key</string>
+
+    <!-- Preferences keys for Settings -->
+    <string name="allow_new_reports_push_key">main.jf.catastropherandroid.allow_new_reports_push_key</string>
+
+    <!-- Settings Strings -->
+    <string name="allow_new_reports_push_title">Allow new reports PUSH</string>
+    <string name="allow_new_reports_push_text">Do you want to activate PUSH messages for new reports?</string>
+    <string name="settings_name">Settings</string>
+</resources>

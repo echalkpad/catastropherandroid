@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+            android:key="@string/allow_new_reports_push_key"
+            android:title="@string/allow_new_reports_push_title"
+            android:summary="@string/allow_new_reports_push_text"
+            android:defaultValue="true"/>
+</PreferenceScreen>
