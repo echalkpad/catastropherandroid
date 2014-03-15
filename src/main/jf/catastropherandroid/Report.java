@@ -3,10 +3,13 @@ package main.jf.catastropherandroid;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.android.gms.maps.model.LatLng;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Report implements Parcelable {
 
@@ -21,34 +24,43 @@ public class Report implements Parcelable {
         }
     };
 
+    private final String id;
+
     private final String title;
 
     private final String text;
-
-    private final String userFbId;
 
     private final LatLng location;
 
     private final Date timestamp;
 
-    public Report(String title, String text, String userFbId, LatLng location) {
+    public Report(String title, String text, LatLng location) {
         this.title = title;
         this.text = text;
-        this.userFbId = userFbId;
         this.location = location;
         this.timestamp = null;
+        this.id = null;
     }
 
-    public Report(String json) {
+    public Report(String json) throws JSONException {
+        this(new JSONObject(json));
+
+    }
+
+    public Report(JSONObject jsonObject) {
         try {
-            JSONObject jsonObject = new JSONObject(json);
-            JSONObject data = jsonObject.getJSONObject("data");
-            JSONObject loc = jsonObject.getJSONObject("loc");
+            JSONObject reportObject = jsonObject.getJSONObject("report");
+            JSONObject data = reportObject.getJSONObject("data");
+            JSONObject loc = reportObject.getJSONObject("loc");
             this.title = data.getString("title");
             this.text = data.getString("text");
-            this.timestamp = new Date(data.getLong("timestamp") / 1000); // fel
-            this.userFbId = null;
-            this.location = new LatLng(loc.getDouble("lon"), loc.getDouble("long"));
+            this.timestamp = new Date(data.getLong("timestamp") / 1000); // TODO fel
+            this.location = new LatLng(loc.getDouble("lat"), loc.getDouble("lon"));
+            if (reportObject.has("_id")) {
+                this.id = reportObject.getString("_id");
+            } else {
+                this.id = null;
+            }
         } catch (JSONException e) {
             throw new RuntimeException("JSON parsing in Report.java error!!");
         }
@@ -57,7 +69,6 @@ public class Report implements Parcelable {
     public Report(Parcel in) {
         title = in.readString();
         text = in.readString();
-        userFbId = in.readString();
         location = new LatLng(in.readDouble(), in.readDouble());
         long timestampLong = in.readLong();
         if (timestampLong == -1) {
@@ -65,6 +76,7 @@ public class Report implements Parcelable {
         } else {
             timestamp = new Date(timestampLong);
         }
+        id = in.readString();
     }
 
     public String toJSONString() {
@@ -75,9 +87,6 @@ public class Report implements Parcelable {
             loc.put("lon", location.longitude);
             loc.put("lat", location.latitude);
             report.put("loc", loc);
-            JSONObject user = new JSONObject();
-            user.put("facebook_id", userFbId);
-            report.put("user", user);
             JSONObject data = new JSONObject();
             data.put("title", title);
             data.put("text", text);
@@ -97,16 +106,16 @@ public class Report implements Parcelable {
         return text;
     }
 
-    public String getUserFbId() {
-        return userFbId;
-    }
-
     public LatLng getLocation() {
         return location;
     }
 
     public Date getTimestamp() {
         return timestamp;
+    }
+
+    public String getId() {
+        return id;
     }
 
     @Override
@@ -118,13 +127,31 @@ public class Report implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(title);
         parcel.writeString(text);
-        parcel.writeString(userFbId);
         parcel.writeDouble(location.longitude);
         parcel.writeDouble(location.latitude);
         if (timestamp == null) {
             parcel.writeLong(-1);
         } else {
             parcel.writeLong(timestamp.getTime());
+        }
+        parcel.writeString(id);
+    }
+
+    public static List<Report> jsonToListOfReports(String json) {
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            if (!jsonObject.getBoolean("status")) return null;
+            JSONArray reportArray = jsonObject.getJSONArray("result");
+            List<Report> reports = new LinkedList<Report>();
+            for (int i = 0; i < reportArray.length(); ++i) {
+                JSONObject reportJSON = reportArray.getJSONObject(i);
+                Report report = new Report(reportJSON);
+                reports.add(report);
+            }
+
+            return reports;
+        } catch (JSONException e) {
+            throw new RuntimeException("Report.java jsonToListOfReports error!!");
         }
     }
 }

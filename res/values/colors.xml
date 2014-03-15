@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="lightblue">#2CA9D2</color>
+    <color name="actionbar_text">#FFFFFF</color>
+    <color name="actionbar_background">#5C70BF</color>
+    <color name="actionbar_divider_bg">#323F73</color>
+</resources>

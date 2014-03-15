@@ -6,4 +6,12 @@
             android:title="@string/allow_new_reports_push_title"
             android:summary="@string/allow_new_reports_push_text"
             android:defaultValue="true"/>
+    <ListPreference
+            android:key="@string/km_to_push_key"
+            android:title="@string/km_to_push_title"
+            android:summary="@string/km_to_push_text"
+            android:entries="@array/km_to_push_entries"
+            android:entryValues="@array/km_to_push_entyvalues"
+            android:defaultValue="50"
+            />
 </PreferenceScreen>

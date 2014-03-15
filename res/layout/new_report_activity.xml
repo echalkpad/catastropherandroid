@@ -2,43 +2,59 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
+              android:weightSum="6"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
+    <fragment
+            android:id="@+id/new_report_map"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:name="com.google.android.gms.maps.MapFragment"/>
 
     <EditText
             android:id="@+id/new_report_title_text"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_marginTop="30dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:textSize="18sp"
-            android:minLines="1"
-            android:hint="@string/title_input"/>
+            android:hint="@string/title_input"
+            android:singleLine="true"
+            android:imeOptions="actionNext"/>
 
     <EditText
             android:id="@+id/new_report_text"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="30dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:maxLines="3"
-            android:inputType="textMultiLine"
             android:textSize="18sp"
             android:hint="@string/text_input"
             android:scrollbars="vertical"
-            android:singleLine="false"
-            android:gravity="top|left"/>
+            android:singleLine="true"
+            android:gravity="top|left"
+            android:imeOptions="actionDone"/>
 
-    <Button
-            android:id="@+id/new_report_send_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:textSize="18sp"
-            android:text="@string/send"/>
+    <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp">
+
+        <Button
+                android:id="@+id/new_report_send_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textSize="18sp"
+                android:text="@string/send"
+                android:textColor="@color/actionbar_text"
+                android:background="@drawable/custom_button"/>
+
+    </RelativeLayout>
 </LinearLayout>

@@ -2,13 +2,19 @@ package main.jf.catastropherandroid;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.net.http.AndroidHttpClient;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class NewReportActivity extends Activity {
 
@@ -22,13 +28,32 @@ public class NewReportActivity extends Activity {
         final String userFBId = getIntent().getExtras().getString(getString(R.string.user_fb_id_key));
         double longitude = getIntent().getExtras().getDouble(getString(R.string.longitude_key));
         double latitude = getIntent().getExtras().getDouble(getString(R.string.latitude_key));
+        float zoom = getIntent().getExtras().getFloat(getString(R.string.zoom_level_key));
 
-        final LatLng location = new LatLng(longitude, latitude);
+        final LatLng location = new LatLng(latitude, longitude);
+
+        GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.new_report_map))
+                .getMap();
+
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(location)
+                .zoom(zoom)
+                .build();
+
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        map.setMyLocationEnabled(true);
+
+        final MarkerOptions markerOptions = new MarkerOptions().position(location);
+        markerOptions.draggable(true);
+        map.addMarker(markerOptions);
 
         getActionBar().setTitle(getString(R.string.new_report_name));
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final HttpHandler httpHandler = new HttpHandler();
+        AndroidHttpClient httpClient = HttpHandler.getAndroidHttpClient(this);
+        final HttpHandler httpHandler = new HttpHandler(httpClient);
 
         Button saveButton = (Button) findViewById(R.id.new_report_send_text);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -42,8 +67,10 @@ public class NewReportActivity extends Activity {
                 } else if (text == null || text.equals("")) {
                     Toast.makeText(NewReportActivity.this, getString(R.string.new_report_empty_text), Toast.LENGTH_SHORT).show();
                 } else {
-                    Report report = new Report(text, title, userFBId, location);
-                    httpHandler.sendNewReport(report, NewReportActivity.this);
+                    LatLng markerLocation = markerOptions.getPosition();
+                    Report report = new Report(text, title, markerLocation);
+                    CatastroperApplication catastroperApplication = (CatastroperApplication) getApplication();
+                    httpHandler.sendNewReport(report, NewReportActivity.this, catastroperApplication.getUserFBAuthToken());
                 }
             }
 
@@ -77,11 +104,11 @@ public class NewReportActivity extends Activity {
     }
 
     public void handleResult(String result) {
-        if (JSONHandler.parseNewReportResult(result)) {
+        if (JSONHandler.parsePostSuccessResult(result)) {
             Toast.makeText(NewReportActivity.this, getString(R.string.new_report_success), Toast.LENGTH_SHORT).show();
             finish();
         } else {
-            Toast.makeText(NewReportActivity.this, getString(R.string.new_report_fail), Toast.LENGTH_SHORT).show();
+            Toast.makeText(NewReportActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
         }
     }
 

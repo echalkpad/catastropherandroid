@@ -1,57 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">CatastropherAndroid</string>
+    <string name="app_name">Katastrof</string>
     <string name="app_id">1466980576853889</string>
 
     <!-- Dialog Strings -->
-    <string name="fb_logged_in">Login successful!</string>
-    <string name="fb_logged_out">You have been logged out</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="logout_prompt">Are you sure you want to log out?</string>
-    <string name="confirm_new_report">Do you want to create a new report?</string>
-    <string name="loading">loading&#8230;</string>
+    <string name="fb_logged_in">Inloggningen lyckades!</string>
+    <string name="fb_logged_out">Du har loggats ut</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nej</string>
+    <string name="logout_prompt">Är du säker på att du vill logga ut?</string>
+    <string name="confirm_new_report">Vill du skapa en ny rapport?</string>
+    <string name="loading">Laddar&#8230;</string>
+    <string name="ok">Okej</string>
+    <string name="main_refresh_desc">Uppdatera karten</string>
+    <string name="delete_report_confirmation">Är du säker på att du vill radera den här rapporten?</string>
 
     <!-- Main Activity Menu List Strings -->
     <string-array name="main_activity_menu_list">
-        <item>Settings</item>
-        <item>About</item>
-        <item>Log out</item>
+        <item>Mina Rapporter</item>
+        <item>Inställningar</item>
+        <item>Om Katastrof</item>
+        <item>Logga ut</item>
     </string-array>
 
     <!-- Drawer Strings -->
-    <string name="drawer_open">Drawer open</string>
-    <string name="drawer_closed">Drawer closed</string>
+    <string name="drawer_open">Drawer öppen</string>
+    <string name="drawer_closed">Drawer stängd</string>
 
     <!-- About Strings -->
-    <string name="about_activity_name">About</string>
-    <string name="about_text">This app is a proof of concept app for Hack For Sweden. To learn more please email jostenbe@kth.se</string>
+    <string name="about_activity_name">Om Katastrof</string>
+    <string name="about_text">Den här appen är en s.k. "proof of concept app" för HackForSweden. Om ni vill veta mer om appen eller dess utvecklare, eposta jostenbe@kth.se</string>
 
     <!-- New Report Strings -->
-    <string name="new_report_name">New Report</string>
-    <string name="title_input">Title: </string>
+    <string name="new_report_name">Ny Rapport</string>
+    <string name="title_input">Titel: </string>
     <string name="text_input">Text: </string>
-    <string name="send">Send</string>
-    <string name="new_report_empty_title">Empty Title!</string>
-    <string name="new_report_empty_text">Empty Text!</string>
-    <string name="new_report_success">New Report sent successfully!</string>
-    <string name="new_report_fail">Network Error</string>
+    <string name="send">Spara</string>
+    <string name="new_report_empty_title">Tom titel!</string>
+    <string name="new_report_empty_text">Tom text!</string>
+    <string name="new_report_success">Rapporten sparades!</string>
+    <string name="network_error">Nätverksfel</string>
 
     <!-- URLs -->
-    <string name="new_report_url">http://83.177.167.93:3000/catastropher/input</string>
-    <string name="list_report_url">http://83.177.167.93:3000/catastropher/output</string>
-    <string name="stream_report_url">http://83.177.167.93:3000/catastropher/stream</string>
+    <string name="new_report_url">http://fbergmark.se:3000/catastropher/report</string>
+    <string name="list_reports_url">http://fbergmark.se:3000/catastropher/catastrophes</string>
+    <string name="gcm_register_url">http://fbergmark.se:3000/device/register</string>
+    <string name="gcm_unregister_url">http://fbergmark.se:3000/device/unregister</string>
+    <string name="my_reports_url">http://fbergmark.se:3000/catastropher/reports/me</string>
+    <string name="delete_report_url">http://fbergmark.se:3000/catastropher/reports</string>
 
     <!-- Bundle keys -->
     <string name="user_fb_id_key">main.jf.catastropherandroid.user_fb_id_key</string>
     <string name="longitude_key">main.jf.catastropherandroid.longitude_key</string>
     <string name="latitude_key">main.jf.catastropherandroid.latitude_key</string>
+    <string name="zoom_level_key">main.jf.catastropherandroid.zoom_level_key</string>
+    <string name="push_report_key">main.jf.catastropherandroid.push_report_key</string>
+    <string name="push_report_noti_title_key">main.jf.catastropherandroid.push_report_noti_title_key</string>
+    <string name="push_report_noti_text_key">main.jf.catastropherandroid.push_report_noti_text_key</string>
 
     <!-- Preferences keys for Settings -->
     <string name="allow_new_reports_push_key">main.jf.catastropherandroid.allow_new_reports_push_key</string>
+    <string name="km_to_push_key">main.jf.catastropherandroid.km_to_push_key</string>
 
     <!-- Settings Strings -->
-    <string name="allow_new_reports_push_title">Allow new reports PUSH</string>
-    <string name="allow_new_reports_push_text">Do you want to activate PUSH messages for new reports?</string>
-    <string name="settings_name">Settings</string>
+    <string name="allow_new_reports_push_title">Tillåt PUSH-meddelanden</string>
+    <string name="allow_new_reports_push_text">Vill du aktivera PUSH-meddelanden för att få nya rapporter?</string>
+    <string name="km_to_push_title">Kilometer till PUSH</string>
+    <string name="km_to_push_text">Sätt antal kilometer du max kan vara från en rapport för få ett PUSH-meddelande.</string>
+    <string name="settings_name">Inställningar</string>
+    <string-array name="km_to_push_entries">
+        <item>5 Kilometer</item>
+        <item>10 Kilometer</item>
+        <item>20 Kilometer</item>
+        <item>50 Kilometer</item>
+        <item>100 Kilometer</item>
+        <item>Alla PUSH-meddelanden</item>
+    </string-array>
+
+    <string-array name="km_to_push_entyvalues">
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>50</item>
+        <item>100</item>
+        <item>10000000</item>
+    </string-array>
+
+    <!-- GCM Strings -->
+    <string name="google_project_id">689478129707</string>
+    <string name="gcm_error_google_account">Du kan inte få PUSH för du har inget Google-Konto aktiverat på den här enheten.
+    </string>
+
+    <!-- My Reports -->
+    <string name="my_reports_name">Mina Rapporter</string>
+    <string name="my_reports_no_reports">Du har inte rapporterat in några rapporter.</string>
+    <string name="delete_report_successfull">Rapporten togs bort!</string>
 </resources>

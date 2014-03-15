@@ -6,8 +6,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.facebook.*;
-import com.facebook.model.GraphUser;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.LoginButton;
 
 /**
@@ -25,6 +26,8 @@ public class MainLoginFragment extends Fragment {
     };
 
     private UiLifecycleHelper uiHelper;
+
+    private MainActivity mainActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -47,37 +50,21 @@ public class MainLoginFragment extends Fragment {
 
     private void onSessionStateChange(final Session session, SessionState state, Exception exception) {
         if (state.isOpened()) {
-            getView().setVisibility(View.INVISIBLE);
-            Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
-                @Override
-                public void onCompleted(GraphUser user, Response response) {
+            if (mainActivity == null) {
+                mainActivity = (MainActivity) getActivity();
+            }
 
-                    if (session == Session.getActiveSession()) {
-                        if (user != null) {
-                            String userId = user.getId();
-                            getView().setVisibility(View.INVISIBLE);
-                            MainActivity mainActivity = (MainActivity) getActivity();
-                            mainActivity.hasLoggedIn(userId);
-                        }
-                    } else {
-                        getView().setVisibility(View.VISIBLE);
-                    }
-                }
-            });
-
-            Request.executeBatchAsync(request);
+            if (mainActivity != null) {
+                mainActivity.hasLoggedIn(session.getAccessToken());
+            }
         } else if (state.isClosed()) {
             tellMainActivityLogout();
         }
+
     }
 
     @Override
     public void onResume() {
-        MainActivity mainActivity = (MainActivity) getActivity();
-        if (mainActivity.getHasLoggedIn()) {
-            getView().setVisibility(View.INVISIBLE);
-        }
-
         super.onResume();
 
         Session session = Session.getActiveSession();
@@ -122,7 +109,8 @@ public class MainLoginFragment extends Fragment {
     }
 
     private void tellMainActivityLogout() {
-        MainActivity mainActivity = (MainActivity) getActivity();
-        mainActivity.hasLoggedOut();
+        if (mainActivity != null) {
+            mainActivity.hasLoggedOut();
+        }
     }
 }

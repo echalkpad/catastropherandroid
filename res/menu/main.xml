@@ -2,4 +2,11 @@
     <item
             android:id="@+id/main_menu"
             android:showAsAction="ifRoom|withText"/>
+
+    <item
+            android:id="@+id/main_action_refresh"
+            android:orderInCategory="100"
+            android:showAsAction="always"
+            android:title="@string/main_refresh_desc"
+            android:icon="@drawable/ic_action_refresh"/>
 </menu>
