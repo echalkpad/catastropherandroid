@@ -45,7 +45,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         String data = intent.getStringExtra("data");
         Report report;
         try {
-            report = new Report(data);
+            report = new Report(data, false);
         } catch (JSONException e) {
             throw new RuntimeException("Swag");
         }
@@ -54,8 +54,10 @@ public class GCMIntentService extends GCMBaseIntentService {
         LatLng reportLatLong = report.getLocation();
 
         float[] results = new float[10];
-        Location.distanceBetween(latest.latitude, latest.longitude, reportLatLong.latitude, reportLatLong.longitude, results);
-        int distanceKM = (int) results[0] * 1000;
+        if (latest != null) {
+            Location.distanceBetween(latest.latitude, latest.longitude, reportLatLong.latitude, reportLatLong.longitude, results);
+        }
+        int distanceKM = (int) results[0] / 1000;
 
         if (distanceKM <= KMToPUSHAtMost) {
             GCMUtils.setupReportPUSH(context, report);

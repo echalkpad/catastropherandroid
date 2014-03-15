@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.http.AndroidHttpClient;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
@@ -25,9 +26,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * MainActivity for Catastropher.
@@ -52,6 +56,8 @@ public class MainActivity extends FragmentActivity {
 
     private boolean receiverRegistrered;
 
+    private LatLng pushLocation;
+
     private final BroadcastReceiver handleGCMMessageReceiver = new BroadcastReceiver() {
 
         @Override
@@ -74,9 +80,13 @@ public class MainActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.main_activity);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         setDrawerLayoutVisible(false);
 
         Report report = getIntent().getParcelableExtra(getString(R.string.push_report_key));
+        if (report != null) {
+            pushLocation = report.getLocation();
+        }
 
         if (savedInstanceState == null) {
             mainLoginFragment = new MainLoginFragment();
@@ -104,7 +114,7 @@ public class MainActivity extends FragmentActivity {
         String[] menuStrings = getResources().getStringArray(R.array.main_activity_menu_list);
 
         drawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, menuStrings));
+                R.layout.custom_list_item, menuStrings));
 
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
@@ -174,7 +184,6 @@ public class MainActivity extends FragmentActivity {
     private void setupMap() {
         final GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.main_map))
                 .getMap();
-
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(SWEDEN_ROYAL_CASTLE)
@@ -305,26 +314,60 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void handleRefreshMapResults(String json) {
+        if (refreshMenuItem != null) {
+            refreshMenuItem.setActionView(null);
+        }
+
+        isRefreshingMap = false;
+
         if (json == null) return;
         final GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(R.id.main_map))
                 .getMap();
 
         map.clear();
 
-        List<Report> reports = Report.jsonToListOfReports(json);
+        final List<Report> reports = Report.jsonToListOfReports(json, false);
+        final Map<String, Report> reportMap = new HashMap<String, Report>();
+        final boolean[] isWindowShown = new boolean[reports.size()];
         if (reports != null) {
             for (Report report : reports) {
-                map.addMarker(new MarkerOptions().
+                Marker marker = map.addMarker(new MarkerOptions().
                         position(report.getLocation())
-                        .title(report.getTitle() + "\n\n" + " date: " + report.getTimestamp())
+                        .title(report.getTitle())
                         .snippet(report.getText()));
+                reportMap.put(marker.getId(), report);
+            }
+
+            if (pushLocation != null) {
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(pushLocation)
+                        .zoom(11)
+                        .build();
+
+                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                pushLocation = null;
             }
         }
 
-        if (refreshMenuItem != null) {
-            refreshMenuItem.setActionView(null);
-        }
-        isRefreshingMap = false;
+        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Report report = reportMap.get(marker.getId());
+                int reportIndex = reports.indexOf(report);
+                if (!isWindowShown[reportIndex]) {
+                    isWindowShown[reportIndex] = true;
+                    return false;
+                }
+
+                Intent intent = new Intent(MainActivity.this, ViewReportActivity.class);
+                intent.putExtra(getString(R.string.report_key), report);
+                startActivity(intent);
+
+                return true;
+            }
+        });
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {

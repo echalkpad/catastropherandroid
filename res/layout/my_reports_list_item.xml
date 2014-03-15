@@ -3,29 +3,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
               android:layout_height="?android:attr/listPreferredItemHeight"
-              android:padding="6dip">
+              android:padding="12dip">
 
-    <LinearLayout
-            android:orientation="vertical"
+    <RelativeLayout
             android:layout_width="0dip"
             android:layout_weight="1"
             android:layout_height="fill_parent">
 
-        <TextView
-                android:id="@+id/my_report_title"
-                android:layout_width="fill_parent"
-                android:layout_height="0dip"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                />
+        <LinearLayout
+                android:layout_alignParentLeft="true"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                >
 
-        <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="0dip"
-                android:layout_weight="1"
-                android:id="@+id/my_report_text"
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                />
-    </LinearLayout>
+            <TextView
+                    android:id="@+id/my_report_title"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dip"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/actionbar_text"
+                    android:textSize="20sp"
+                    />
+
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dip"
+                    android:layout_weight="1"
+                    android:id="@+id/my_report_text"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:textColor="@color/actionbar_text"
+                    android:textSize="16sp"
+                    />
+        </LinearLayout>
+
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_margin="10dp"
+                android:layout_alignParentRight="true">
+
+            <Button
+                    android:id="@+id/delete_report"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="16sp"
+                    android:layout_margin="5dp"
+                    android:text="@string/delete_button_text"
+                    android:textColor="@color/delete_button_color"
+                    android:background="@android:color/transparent"/>
+        </RelativeLayout>
+    </RelativeLayout>
 </LinearLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Katastrof</string>
+    <string name="slogan">\"Hjälp andra att hjälpa dig\"</string>
     <string name="app_id">1466980576853889</string>
 
     <!-- Dialog Strings -->
@@ -55,8 +56,7 @@
     <string name="latitude_key">main.jf.catastropherandroid.latitude_key</string>
     <string name="zoom_level_key">main.jf.catastropherandroid.zoom_level_key</string>
     <string name="push_report_key">main.jf.catastropherandroid.push_report_key</string>
-    <string name="push_report_noti_title_key">main.jf.catastropherandroid.push_report_noti_title_key</string>
-    <string name="push_report_noti_text_key">main.jf.catastropherandroid.push_report_noti_text_key</string>
+    <string name="report_key">main.jf.catastropherandroid.report_key</string>
 
     <!-- Preferences keys for Settings -->
     <string name="allow_new_reports_push_key">main.jf.catastropherandroid.allow_new_reports_push_key</string>
@@ -95,4 +95,9 @@
     <string name="my_reports_name">Mina Rapporter</string>
     <string name="my_reports_no_reports">Du har inte rapporterat in några rapporter.</string>
     <string name="delete_report_successfull">Rapporten togs bort!</string>
+    <string name="delete_button_text">Radera</string>
+    <string name="push_title">PUSH från Katastrof</string>
+
+    <!-- View Report text -->
+    <string name="view_report_date_prefix">Tid inrapporterad:\n </string>
 </resources>

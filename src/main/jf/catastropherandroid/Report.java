@@ -1,5 +1,6 @@
 package main.jf.catastropherandroid;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.android.gms.maps.model.LatLng;
@@ -42,19 +43,20 @@ public class Report implements Parcelable {
         this.id = null;
     }
 
-    public Report(String json) throws JSONException {
-        this(new JSONObject(json));
+    public Report(String json, boolean onlyReport) throws JSONException {
+        this(new JSONObject(json), onlyReport);
 
     }
 
-    public Report(JSONObject jsonObject) {
+    public Report(JSONObject jsonObject, boolean onlyReport) {
         try {
-            JSONObject reportObject = jsonObject.getJSONObject("report");
+            String s = jsonObject.toString();
+            JSONObject reportObject = onlyReport ? jsonObject : jsonObject.getJSONObject("report");
             JSONObject data = reportObject.getJSONObject("data");
             JSONObject loc = reportObject.getJSONObject("loc");
             this.title = data.getString("title");
             this.text = data.getString("text");
-            this.timestamp = new Date(data.getLong("timestamp") / 1000); // TODO fel
+            this.timestamp = new Date(data.getLong("timestamp"));
             this.location = new LatLng(loc.getDouble("lat"), loc.getDouble("lon"));
             if (reportObject.has("_id")) {
                 this.id = reportObject.getString("_id");
@@ -127,8 +129,8 @@ public class Report implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(title);
         parcel.writeString(text);
-        parcel.writeDouble(location.longitude);
         parcel.writeDouble(location.latitude);
+        parcel.writeDouble(location.longitude);
         if (timestamp == null) {
             parcel.writeLong(-1);
         } else {
@@ -137,7 +139,16 @@ public class Report implements Parcelable {
         parcel.writeString(id);
     }
 
-    public static List<Report> jsonToListOfReports(String json) {
+    public List<String> getMetaDataList(Context context) {
+        List<String> metaDataList = new LinkedList<String>();
+        String dateString = context.getString(R.string.view_report_date_prefix) + getTimestamp().toGMTString();
+        dateString = dateString.substring(0, dateString.length() - 4);
+        metaDataList.add(dateString);
+        metaDataList.add(getText());
+        return metaDataList;
+    }
+
+    public static List<Report> jsonToListOfReports(String json, boolean onlyReport) {
         try {
             JSONObject jsonObject = new JSONObject(json);
             if (!jsonObject.getBoolean("status")) return null;
@@ -145,7 +156,7 @@ public class Report implements Parcelable {
             List<Report> reports = new LinkedList<Report>();
             for (int i = 0; i < reportArray.length(); ++i) {
                 JSONObject reportJSON = reportArray.getJSONObject(i);
-                Report report = new Report(reportJSON);
+                Report report = new Report(reportJSON, onlyReport);
                 reports.add(report);
             }
 

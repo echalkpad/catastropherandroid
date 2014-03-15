@@ -80,26 +80,25 @@ public class GCMUtils {
         Intent notificationIntent = new Intent(context,
                 MainActivity.class);
 
-        notificationIntent.putExtra(context.getString(R.string.push_report_noti_title_key), report.getTitle());
-        notificationIntent.putExtra(context.getString(R.string.push_report_noti_text_key), report.getText());
+        notificationIntent.putExtra(context.getString(R.string.push_report_key), report);
 
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        setupAndShowNotification(context, notificationIntent, report.getTitle(), report.getText());
+        setupAndShowNotification(context, notificationIntent, report.getTitle());
     }
 
     private static void setupAndShowNotification(Context context,
                                                  Intent notificationIntent,
-                                                 String title, String text) {
+                                                 String title) {
         long when = System.currentTimeMillis();
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
-                notificationIntent, 0);
+                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .setContentTitle(title).setSmallIcon(R.drawable.notification_icon).setWhen(when)
-                .setContentIntent(pendingIntent).setContentText(text);
-        builder.setContentText(text);
+                .setContentTitle(context.getString(R.string.push_title)).
+                        setSmallIcon(R.drawable.notification_icon).setWhen(when)
+                .setContentIntent(pendingIntent).setContentText(title);
 
         Notification notification = builder.build();
 
@@ -109,6 +108,7 @@ public class GCMUtils {
         NotificationManager notificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0, notification);
+        int id = (int) when % Integer.MAX_VALUE;
+        notificationManager.notify(id, notification);
     }
 }

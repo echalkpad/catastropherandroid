@@ -12,6 +12,6 @@
             android:summary="@string/km_to_push_text"
             android:entries="@array/km_to_push_entries"
             android:entryValues="@array/km_to_push_entyvalues"
-            android:defaultValue="50"
+            android:defaultValue="10000000"
             />
 </PreferenceScreen>

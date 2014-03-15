@@ -25,7 +25,6 @@ public class NewReportActivity extends Activity {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.new_report_activity);
 
-        final String userFBId = getIntent().getExtras().getString(getString(R.string.user_fb_id_key));
         double longitude = getIntent().getExtras().getDouble(getString(R.string.longitude_key));
         double latitude = getIntent().getExtras().getDouble(getString(R.string.latitude_key));
         float zoom = getIntent().getExtras().getFloat(getString(R.string.zoom_level_key));

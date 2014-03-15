@@ -4,4 +4,5 @@
     <color name="actionbar_text">#FFFFFF</color>
     <color name="actionbar_background">#5C70BF</color>
     <color name="actionbar_divider_bg">#323F73</color>
+    <color name="delete_button_color">#FF0000</color>
 </resources>

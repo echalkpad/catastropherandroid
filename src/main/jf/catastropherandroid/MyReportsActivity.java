@@ -54,7 +54,7 @@ public class MyReportsActivity extends ListActivity {
     public void handleMyReportsResult(String json) {
         dismissProgressBar();
         if (json != null) {
-            List<Report> reports = Report.jsonToListOfReports(json);
+            List<Report> reports = Report.jsonToListOfReports(json, true);
             if (reports == null) return;
 
             arrayAdapter = new MyReportsArrayAdapter(R.layout.my_reports_list_item, reports, this);

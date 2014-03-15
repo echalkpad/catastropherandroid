@@ -3,10 +3,12 @@ package main.jf.catastropherandroid;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -47,6 +49,19 @@ public class MyReportsArrayAdapter extends ArrayAdapter<Report> {
         if (v == null) return v;
 
         v.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(myReportsActivity, ViewReportActivity.class);
+                intent.putExtra(myReportsActivity.getString(R.string.report_key), report);
+                myReportsActivity.startActivity(intent);
+            }
+
+        });
+
+        Button deleteButton = (Button) v.findViewById(R.id.delete_report);
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
