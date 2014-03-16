@@ -35,6 +35,8 @@ public class Report implements Parcelable {
 
     private final Date timestamp;
 
+    private final List<String> weatherMetaData = new LinkedList<String>();
+
     public Report(String title, String text, LatLng location) {
         this.title = title;
         this.text = text;
@@ -43,14 +45,13 @@ public class Report implements Parcelable {
         this.id = null;
     }
 
-    public Report(String json, boolean onlyReport) throws JSONException {
-        this(new JSONObject(json), onlyReport);
+    public Report(String json, boolean onlyReport, Context context) throws JSONException {
+        this(new JSONObject(json), onlyReport, context);
 
     }
 
-    public Report(JSONObject jsonObject, boolean onlyReport) {
+    public Report(JSONObject jsonObject, boolean onlyReport, Context context) {
         try {
-            String s = jsonObject.toString();
             JSONObject reportObject = onlyReport ? jsonObject : jsonObject.getJSONObject("report");
             JSONObject data = reportObject.getJSONObject("data");
             JSONObject loc = reportObject.getJSONObject("loc");
@@ -63,9 +64,89 @@ public class Report implements Parcelable {
             } else {
                 this.id = null;
             }
+            if (!onlyReport && jsonObject.has("weather")) {
+                JSONObject weather = jsonObject.getJSONObject("weather");
+                addWeather(weather, context);
+            }
         } catch (JSONException e) {
             throw new RuntimeException("JSON parsing in Report.java error!!");
         }
+    }
+
+    public void addWeather(JSONObject weather, Context context) throws JSONException {
+        String msl = context.getString(R.string.weather_msl) + " " +
+                weather.getDouble("msl") + " " +
+                context.getString(R.string.weather_msl_unit);
+        weatherMetaData.add(msl);
+
+        String t = context.getString(R.string.weather_t) + " " +
+                weather.getDouble("t") + " " +
+                context.getString(R.string.weather_t_unit);
+        weatherMetaData.add(t);
+
+        String vis = context.getString(R.string.weather_vis) + " " +
+                weather.getInt("vis") + " " +
+                context.getString(R.string.weather_vis_unit);
+        weatherMetaData.add(vis);
+
+        String wd = context.getString(R.string.weather_wd) + " " +
+                weather.getInt("wd") + " " +
+                context.getString(R.string.weather_wd_unit);
+        weatherMetaData.add(wd);
+
+        String ws = context.getString(R.string.weather_ws) + " " +
+                weather.getDouble("ws") + " " +
+                context.getString(R.string.weather_ws_unit);
+        weatherMetaData.add(ws);
+
+        String r = context.getString(R.string.weather_r) + " " +
+                weather.getInt("r") + " " +
+                context.getString(R.string.weather_r_unit);
+        weatherMetaData.add(r);
+
+        String tstm = context.getString(R.string.weather_tstm) + " " +
+                weather.getInt("tstm") + " " +
+                context.getString(R.string.weather_tstm_unit);
+        weatherMetaData.add(tstm);
+
+        String gust = context.getString(R.string.weather_gust) + " " +
+                weather.getDouble("gust") + " " +
+                context.getString(R.string.weather_gust_unit);
+        weatherMetaData.add(gust);
+
+        String pis = context.getString(R.string.weather_pis) + " " +
+                weather.getDouble("pis") + " " +
+                context.getString(R.string.weather_pis_unit);
+        weatherMetaData.add(pis);
+
+        int pcatLevel = weather.getInt("pcat");
+
+        String pcat = context.getString(R.string.weather_pcat) + " ";
+        switch (pcatLevel) {
+            case 0:
+                pcat += context.getString(R.string.weather_pcat_unit_0);
+                break;
+            case 1:
+                pcat += context.getString(R.string.weather_pcat_unit_1);
+                break;
+            case 2:
+                pcat += context.getString(R.string.weather_pcat_unit_2);
+                break;
+            case 3:
+                pcat += context.getString(R.string.weather_pcat_unit_3);
+                break;
+            case 4:
+                pcat += context.getString(R.string.weather_pcat_unit_4);
+                break;
+            case 5:
+                pcat += context.getString(R.string.weather_pcat_unit_5);
+                break;
+            case 6:
+                pcat += context.getString(R.string.weather_pcat_unit_6);
+                break;
+        }
+
+        weatherMetaData.add(pcat);
     }
 
     public Report(Parcel in) {
@@ -79,6 +160,7 @@ public class Report implements Parcelable {
             timestamp = new Date(timestampLong);
         }
         id = in.readString();
+        in.readStringList(weatherMetaData);
     }
 
     public String toJSONString() {
@@ -136,7 +218,9 @@ public class Report implements Parcelable {
         } else {
             parcel.writeLong(timestamp.getTime());
         }
+
         parcel.writeString(id);
+        parcel.writeStringList(weatherMetaData);
     }
 
     public List<String> getMetaDataList(Context context) {
@@ -145,10 +229,11 @@ public class Report implements Parcelable {
         dateString = dateString.substring(0, dateString.length() - 4);
         metaDataList.add(dateString);
         metaDataList.add(getText());
+        metaDataList.addAll(weatherMetaData);
         return metaDataList;
     }
 
-    public static List<Report> jsonToListOfReports(String json, boolean onlyReport) {
+    public static List<Report> jsonToListOfReports(String json, boolean onlyReport, Context context) {
         try {
             JSONObject jsonObject = new JSONObject(json);
             if (!jsonObject.getBoolean("status")) return null;
@@ -156,7 +241,7 @@ public class Report implements Parcelable {
             List<Report> reports = new LinkedList<Report>();
             for (int i = 0; i < reportArray.length(); ++i) {
                 JSONObject reportJSON = reportArray.getJSONObject(i);
-                Report report = new Report(reportJSON, onlyReport);
+                Report report = new Report(reportJSON, onlyReport, context);
                 reports.add(report);
             }
 

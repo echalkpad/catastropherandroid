@@ -42,7 +42,7 @@ public class HttpHandler {
     public String postData(String url, String data) {
         try {
             HttpPost httpPost = new HttpPost(url);
-            HttpEntity postDataEntity = new StringEntity(data);
+            HttpEntity postDataEntity = new StringEntity(data, "UTF-8");
             httpPost.setEntity(postDataEntity);
             httpPost.setHeader("Accept", "application/json");
             httpPost.setHeader("Content-type", "application/json");

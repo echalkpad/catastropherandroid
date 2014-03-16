@@ -30,7 +30,7 @@
 
     <!-- About Strings -->
     <string name="about_activity_name">Om Katastrof</string>
-    <string name="about_text">Den här appen är en s.k. "proof of concept app" för HackForSweden. Om ni vill veta mer om appen eller dess utvecklare, eposta jostenbe@kth.se</string>
+    <string name="about_text">Den här appen är en s.k. "Proof of Concept app" för HackForSweden. Om ni vill veta mer om appen eller dess utvecklare, eposta jostenbe@kth.se</string>
 
     <!-- New Report Strings -->
     <string name="new_report_name">Ny Rapport</string>
@@ -99,5 +99,32 @@
     <string name="push_title">PUSH från Katastrof</string>
 
     <!-- View Report text -->
-    <string name="view_report_date_prefix">Tid inrapporterad:\n </string>
+    <string name="view_report_date_prefix">Tid inrapporterad:\n</string>
+    <string name="weather_msl">Lufttryck, reducerat till havsytans nivå:\n</string>
+    <string name="weather_t"> Lufttemperatur:\n</string>
+    <string name="weather_vis"> Sikt:\n</string>
+    <string name="weather_wd">Vindriktning:\n</string>
+    <string name="weather_ws">Vindhastighet:\n</string>
+    <string name="weather_r">Relativ luftfuktighet:\n</string>
+    <string name="weather_tstm">Sannolikhet för åska:\n</string>
+    <string name="weather_gust">Byvind:\n</string>
+    <string name="weather_pis">Nederbördsintensitet, snö:\n</string>
+    <string name="weather_pcat">Nederbördsform:\n</string>
+
+    <string name="weather_msl_unit">hPa</string>
+    <string name="weather_t_unit">\u00b0</string>
+    <string name="weather_vis_unit">km</string>
+    <string name="weather_wd_unit">grader</string>
+    <string name="weather_ws_unit">m/s</string>
+    <string name="weather_r_unit">%</string>
+    <string name="weather_tstm_unit">%</string>
+    <string name="weather_gust_unit">m/s</string>
+    <string name="weather_pis_unit">mm/h</string>
+    <string name="weather_pcat_unit_0">Ingen nederbörd</string>
+    <string name="weather_pcat_unit_1">Snö</string>
+    <string name="weather_pcat_unit_2">Snöblandat regn</string>
+    <string name="weather_pcat_unit_3">Regn</string>
+    <string name="weather_pcat_unit_4">Duggregn</string>
+    <string name="weather_pcat_unit_5">Fryst regn</string>
+    <string name="weather_pcat_unit_6">Fryst duggregn</string>
 </resources>

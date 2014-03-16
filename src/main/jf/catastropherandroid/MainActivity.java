@@ -326,7 +326,7 @@ public class MainActivity extends FragmentActivity {
 
         map.clear();
 
-        final List<Report> reports = Report.jsonToListOfReports(json, false);
+        final List<Report> reports = Report.jsonToListOfReports(json, false, this);
         final Map<String, Report> reportMap = new HashMap<String, Report>();
         final boolean[] isWindowShown = new boolean[reports.size()];
         if (reports != null) {

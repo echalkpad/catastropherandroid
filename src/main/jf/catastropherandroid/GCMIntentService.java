@@ -45,7 +45,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         String data = intent.getStringExtra("data");
         Report report;
         try {
-            report = new Report(data, false);
+            report = new Report(data, false, this);
         } catch (JSONException e) {
             throw new RuntimeException("Swag");
         }

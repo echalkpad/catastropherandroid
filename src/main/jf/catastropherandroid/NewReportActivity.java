@@ -67,7 +67,7 @@ public class NewReportActivity extends Activity {
                     Toast.makeText(NewReportActivity.this, getString(R.string.new_report_empty_text), Toast.LENGTH_SHORT).show();
                 } else {
                     LatLng markerLocation = markerOptions.getPosition();
-                    Report report = new Report(text, title, markerLocation);
+                    Report report = new Report(title, text, markerLocation);
                     CatastroperApplication catastroperApplication = (CatastroperApplication) getApplication();
                     httpHandler.sendNewReport(report, NewReportActivity.this, catastroperApplication.getUserFBAuthToken());
                 }
