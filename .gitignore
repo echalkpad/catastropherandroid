@@ -9,3 +9,8 @@ local.properties
 bin/
 target
 gen/
+
+AndroidManifest.xml
+out/
+project.properties
+local.properties
